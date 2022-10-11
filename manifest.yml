@@ -1,0 +1,35 @@
+modules:
+  consumer:
+    - key: queue-consumer
+      # Name of the queue for which this consumer will be invoked
+      queue: audit-queue
+      resolver:
+        function: consumer-function
+        # resolver function to be called with payload
+        method: event-listener
+  macro:
+    - key: audit-macro
+      function: macro
+      title: Viridescent Reporter
+      description: Web Carbon Report
+  confluence:contextMenu:
+    - key: audit-selector
+      function: selector
+      title: Audit Site
+  function:
+    - key: selector
+      handler: selector.run
+    - key: macro
+      handler: macro.run
+    - key: consumer-function
+      handler: consumer.handler
+
+app:
+  id: ari:cloud:ecosystem::app/6cf02130-bba5-4de8-8fd8-03a039f48355
+permissions:
+  scopes:
+    - read:content-details:confluence
+    - read:content.property:confluence
+    - write:content.property:confluence
+    - write:confluence-content
+    - storage:app
