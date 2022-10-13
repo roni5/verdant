@@ -22,18 +22,48 @@ export async function getAudits() {
   }
 }
 
-async function saveAudit(url, auditData) {
+export async function saveAudit(url, contentId, auditData) {
   const audits = await getAudits();
-  const newAudits = [...audits, { ...auditData, url }];
-  return await storage.set("audits", newAudits);
+  const exisitingIndex = audits.findIndex((audit) => audit.url === url && audit.contentId === contentId);
+  if (exisitingIndex > -1) {
+    const current = audits[exisitingIndex];
+    audits[exisitingIndex] = { ...current, url, ...auditData };
+  } else {
+    audits.push({ url, ...auditData });
+  }
+  await storage.set("audits", [...audits]);
+  return audits;
+}
+
+async function clearAudits(contentId) {
+  const audits = await getAudits();
+  const newAudits = audits.filter((audit) => audit.contentId !== contentId);
+  await storage.set("audits", newAudits);
+  return newAudits;
+}
+
+async function clearAllAudits() {
+  await storage.set("audits", []);
+  return [];
 }
 
 export function useAudits() {
   const [audits, setAudits] = useState(() => getAudits());
   return {
     audits,
-    async updateAudit(url, auditData) {
-      await saveAudit(url, auditData);
+    refreshAudits: async () =>{
+      setAudits(await getAudits());
+    },
+    clearAllAudits: async () => {
+      const newAudits = await clearAllAudits();
+      setAudits(newAudits);
+    },
+    clearAudits: async (contentId) => {
+      const newAudits = await clearAudits(contentId);
+      setAudits(newAudits);
+    },
+    async updateAudit(url, contentId, auditData) {
+      await saveAudit(url, contentId, auditData);
       const i = audits.findIndex((item) => item.url === url);
       if (i >= 0) {
         audits[i] = { ...auditData, url };

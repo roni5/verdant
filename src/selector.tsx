@@ -50,8 +50,8 @@ const App = () => {
   }
 
   const submitAudit = async () => {
-    const jobId = await queue.push({ url, spaceKey });
-    await updateAudit(url, {
+    const jobId = await queue.push({ url, spaceKey, contentId });
+    await updateAudit(url, contentId, {
       status: "pending",
       url,
       contentId,
@@ -91,10 +91,9 @@ const App = () => {
       ) : (
         <Fragment>
           <Text>
-            <Badge appearance="added" text="Site Added" />{" "}
             <Strong>Ready to audit {url}?</Strong>
           </Text>
-          <Text>Click the button below to add.</Text>
+          <Text>Click the button below to add {url} to the audit queue.</Text>
           <Button onClick={submitAudit} text="Audit" />
         </Fragment>
       )}

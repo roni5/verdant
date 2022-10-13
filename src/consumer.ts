@@ -2,10 +2,11 @@ import Resolver from "@forge/resolver";
 import { createConfluencePage } from "./utils/confluenceUtils";
 import { storage } from "@forge/api";
 import audit from "./utils/audit";
+import { saveAudit } from "./storage";
 const resolver = new Resolver();
 
 resolver.define("event-listener", async ({ payload, context }) => {
-  const { url, spaceKey } = payload;
+  const { url, spaceKey, contentId } = payload;
 
   let indexPageId = await storage.get("audits-index-page-id");
   if (!indexPageId) {
@@ -19,14 +20,16 @@ resolver.define("event-listener", async ({ payload, context }) => {
     indexPageId = id;
   }
   const date = new Date();
-  const formattedDate = date.toISOString().split("T")[0] + " " + date.toTimeString().split(" ")[0]; // 2021-07-01 12:00:00
+  const formattedDate =
+    date.toISOString().split("T")[0] + " " + date.toTimeString().split(" ")[0]; // 2021-07-01 12:00:00
   const auditData = await audit(url);
-  await createConfluencePage(
+  const { id } = await createConfluencePage(
     spaceKey,
     indexPageId,
     `${formattedDate} | ${url}`,
     `<p>${auditData.carbon}</p>`
   );
+  await saveAudit(url, contentId, { pageId: id, status: "success", ...auditData });
 });
 
 export const handler = resolver.getDefinitions();

@@ -1,8 +1,6 @@
 import { fetch } from "@forge/api";
 import greenFoundation from "./greenFoundation";
 
-
-
 const addProtocolIfMissing = (url: string) => {
   if (!url.startsWith("http")) {
     return `https://${url}`;
@@ -18,7 +16,7 @@ const conductAudit = async (url) => {
     )}&key=${APIKEY}`
   );
   const data = await response.json();
-  return {...data};
+  return { ...data };
 };
 
 const audit = async (auditURL) => {
@@ -61,7 +59,17 @@ const audit = async (auditURL) => {
       potentialImageSavings,
       // fullAudit: audits,
     };
-    return payload;
+
+    let scores = [
+      payload.hosting.green === true,
+      payload.pagePerformance > 0.69,
+      payload.pageWeight < 2.5,
+      payload.carbonWithCache / payload.carbon < 0.3,
+    ];
+
+    const score = scores.filter((item) => item === true).length + 1;
+
+    return { ...payload, score };
   } catch (error) {
     console.log(error);
     return null;
