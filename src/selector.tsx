@@ -15,7 +15,6 @@ import ForgeUI, {
 import { Queue } from "@forge/events";
 import { isValidURLWithOrWithoutProtocol } from "./utils/functions";
 import { useAudits } from "./storage";
-import { createConfluencePage } from "./utils/confluenceUtils";
 
 const ErrorMessage = () => {
   return (
@@ -66,8 +65,6 @@ const App = () => {
     const response = await jobProgress.getStats();
     const { success, inProgress, failed } = await response.json();
     setJobResponse({ success, inProgress, failed });
-    // const data = await createConfluencePage(spaceKey, undefined, url, "<p>This is a test page!</p>");
-    // setJobResponse({...data});
   };
 
   const refreshJobStatus = async () => {

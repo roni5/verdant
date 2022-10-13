@@ -27,6 +27,11 @@ modules:
 app:
   id: ari:cloud:ecosystem::app/6cf02130-bba5-4de8-8fd8-03a039f48355
 permissions:
+  external:
+      fetch:
+        backend:
+          - 'https://admin.thegreenwebfoundation.org'
+          - 'https://www.googleapis.com'
   scopes:
     - read:content-details:confluence
     - read:content.property:confluence
