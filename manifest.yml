@@ -1,11 +1,9 @@
 modules:
   consumer:
     - key: queue-consumer
-      # Name of the queue for which this consumer will be invoked
       queue: audit-queue
       resolver:
-        function: consumer-function
-        # resolver function to be called with payload
+        function: reporter-function
         method: event-listener
   macro:
     - key: audit-macro
@@ -16,13 +14,20 @@ modules:
     - key: audit-selector
       function: selector
       title: Audit Site
+  confluence:globalPage:
+    - key: gs
+      function: global-stats
+      title: Web Carbon Stats
+      route: web-carbon-stats
   function:
     - key: selector
       handler: selector.run
     - key: macro
       handler: macro.run
-    - key: consumer-function
-      handler: consumer.handler
+    - key: reporter-function
+      handler: reporter.handler
+    - key: global-stats
+      handler: global-stats.run
 
 app:
   id: ari:cloud:ecosystem::app/6cf02130-bba5-4de8-8fd8-03a039f48355
@@ -38,3 +43,7 @@ permissions:
     - write:content.property:confluence
     - write:confluence-content
     - storage:app
+    - write:project:jira
+    - read:project:jira
+    - manage:jira-configuration
+    - read:jira-work

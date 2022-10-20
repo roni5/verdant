@@ -5,7 +5,8 @@
   "scripts": {
     "validate": "tsc --noEmit --project ./tsconfig.json",
     "lint": "./node_modules/.bin/eslint src/**/* || npm run --silent hook-errors",
-    "hook-errors": "echo '\\x1b[31mThe build failed because a Forge UI hook is being used incorrectly. Forge UI hooks follow the same rules as React Hooks but have their own API definitions. See the Forge documentation for details on how to use Forge UI hooks.\n' && exit 1"
+    "hook-errors": "echo '\\x1b[31mThe build failed because a Forge UI hook is being used incorrectly. Forge UI hooks follow the same rules as React Hooks but have their own API definitions. See the Forge documentation for details on how to use Forge UI hooks.\n' && exit 1",
+    "count": "cloc src"
   },
   "devDependencies": {
     "@types/node": "^12.11.1",
@@ -19,6 +20,7 @@
     "@forge/api": "^2.6.0",
     "@forge/events": "^0.7.0",
     "@forge/resolver": "^1.4.4",
-    "@forge/ui": "^1.0.0"
+    "@forge/ui": "^1.0.0",
+    "cloc": "^2.10.0"
   }
 }

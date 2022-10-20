@@ -35,7 +35,7 @@ const audit = async (auditURL) => {
       stackPacks,
     } = results[0];
 
-    const { hosted_by_id, url, partner, modified, ...hostingInfo } = results[1];
+    const { hosted_by_id, partner, modified, ...hostingInfo } = results[1];
 
     const MBWeight = audits["total-byte-weight"].numericValue / 1024 / 1024;
 
@@ -57,6 +57,7 @@ const audit = async (auditURL) => {
       carbon: MBWeight * 10,
       carbonWithCache: MBWeight * 10 - cachedWeight * 10 + 0.5,
       potentialImageSavings,
+      cachedWeight,
       // fullAudit: audits,
     };
 
@@ -67,9 +68,33 @@ const audit = async (auditURL) => {
       payload.carbonWithCache / payload.carbon < 0.3,
     ];
 
+    let scoreTasks = [
+      "Switch to Green Hosting",
+      "Improve Page Performance",
+      "Reduce Page Weight",
+      "Increase Cached Resources",
+    ];
+    let scoreDesc = [
+      "switching will reduce the amount of energy used by your server.",
+      "making your page more performant will reduce the amount of energy used by the client.",
+      "reducing the page weight will reduce the amount of energy required to send your webpage to the client.",
+      "increasing the amount of cached resources will reduce the amount of data that you will need to send to a client on a repeat visit.",
+    ];
+
+    const suggestedTasks = [];
+
+    scores.forEach((score, index) => {
+      if (!score) {
+        suggestedTasks.push({
+          task: scoreTasks[index],
+          description: scoreDesc[index],
+        });
+      }
+    });
+
     const score = scores.filter((item) => item === true).length + 1;
 
-    return { ...payload, score };
+    return { ...payload, score, suggestedTasks };
   } catch (error) {
     console.log(error);
     return null;

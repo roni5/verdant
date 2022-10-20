@@ -15,6 +15,8 @@ import ForgeUI, {
 import { Queue } from "@forge/events";
 import { isValidURLWithOrWithoutProtocol } from "./utils/functions";
 import { useAudits } from "./storage";
+import { createConfluencePage, getConfluencePageByID } from "./utils/confluenceUtils";
+import { createJiraProject, createOrFindAuditJiraProject } from "./utils/jiraUtils";
 
 const ErrorMessage = () => {
   return (
@@ -38,7 +40,7 @@ const App = () => {
   const [jobId, setJobId] = useState("");
   const [jobResponse, setJobResponse] = useState(null);
 
-  let url = (extensionContext as ContextMenuExtensionContext)?.selectedText;
+  let url = (extensionContext as ContextMenuExtensionContext)?.selectedText.trim();
   const isValid = isValidURLWithOrWithoutProtocol(url);
 
   if (!contentId) {
@@ -50,7 +52,7 @@ const App = () => {
   }
 
   const submitAudit = async () => {
-    const jobId = await queue.push({ url, spaceKey, contentId });
+    const jobId = await queue.push({ url, spaceKey, contentId, accountId });
     await updateAudit(url, contentId, {
       status: "pending",
       url,
@@ -65,6 +67,12 @@ const App = () => {
     const response = await jobProgress.getStats();
     const { success, inProgress, failed } = await response.json();
     setJobResponse({ success, inProgress, failed });
+  };
+
+  const testFunction = async () => {
+    setSubmitted(true);
+    const response = await createOrFindAuditJiraProject(accountId);
+    setJobResponse(response);
   };
 
   const refreshJobStatus = async () => {
