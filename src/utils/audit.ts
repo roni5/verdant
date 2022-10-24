@@ -75,10 +75,10 @@ const audit = async (auditURL) => {
       "Increase Cached Resources",
     ];
     let scoreDesc = [
-      "switching will reduce the amount of energy used by your server.",
-      "making your page more performant will reduce the amount of energy used by the client.",
-      "reducing the page weight will reduce the amount of energy required to send your webpage to the client.",
-      "increasing the amount of cached resources will reduce the amount of data that you will need to send to a client on a repeat visit.",
+      "As a developer, I want to switch this domain to green hosting. Doing so will reduce the amount of energy used by our servers.",
+      "As a developer, I want to make this webpage more performant. This will reduce the amount of energy used by the client when visiting this page.",
+      "As a developer, I want to reduce the page weight of this webpage. Doing so will reduce the amount of energy required to send our webpage to the client.",
+      "As a developer, I want to increase the amount of cached resources to at least 30% of page weight. Doing so will reduce the amount of data that we will need to send to a client on a repeat visit.",
     ];
 
     const suggestedTasks = [];

@@ -1,4 +1,10 @@
 modules:
+  jira:dashboardGadget:
+      - key: web-carbon-green-hosting-gadget
+        title: Web Carbon Green Hosting
+        description: Displays what percentage of your audited webpages are green.
+        thumbnail: https://ik.imagekit.io/sld/Frame_3__1__vMAxCrl8w.png
+        function: hosting-gadget
   consumer:
     - key: queue-consumer
       queue: audit-queue
@@ -17,9 +23,12 @@ modules:
   confluence:globalPage:
     - key: gs
       function: global-stats
-      title: Web Carbon Stats
+      title: Verdent Web Carbon Stats
       route: web-carbon-stats
+      icon: https://ik.imagekit.io/sld/Frame_3__1__vMAxCrl8w.png
   function:
+    - key: hosting-gadget
+      handler: hosting-gadget.run
     - key: selector
       handler: selector.run
     - key: macro
@@ -28,7 +37,6 @@ modules:
       handler: reporter.handler
     - key: global-stats
       handler: global-stats.run
-
 app:
   id: ari:cloud:ecosystem::app/6cf02130-bba5-4de8-8fd8-03a039f48355
 permissions:
@@ -47,3 +55,4 @@ permissions:
     - read:project:jira
     - manage:jira-configuration
     - read:jira-work
+    - write:jira-work

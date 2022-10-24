@@ -5,15 +5,22 @@ import {
   createAuditPage,
   createOrFindAuditIndexPage,
 } from "./utils/confluenceUtils";
-import { createOrFindAuditJiraProject } from "./utils/jiraUtils";
+import { createJiraIssues, createOrFindAuditJiraProject } from "./utils/jiraUtils";
 const resolver = new Resolver();
 
 resolver.define("event-listener", async ({ payload, context }) => {
   const { url, spaceKey, contentId, accountId } = payload;
   const indexPageId = await createOrFindAuditIndexPage(spaceKey);
   const auditData = await audit(url);
+  const jiraId = await createOrFindAuditJiraProject(accountId);
+  const issues = await createJiraIssues(url, auditData);
+  auditData.suggestedTasks = auditData.suggestedTasks.map(({...rest}, i) => {
+    return {
+      ...rest,
+      issue: issues[i],
+    };
+  })
   const pageId = await createAuditPage(auditData, spaceKey, indexPageId, url);
-  // const jiraId = await createOrFindAuditJiraProject(accountId);
   await saveAudit(url, contentId, {
     pageId,
     status: "success",

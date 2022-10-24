@@ -15,7 +15,7 @@ import ForgeUI, {
 import { Queue } from "@forge/events";
 import { isValidURLWithOrWithoutProtocol } from "./utils/functions";
 import { useAudits } from "./storage";
-import { createConfluencePage, getConfluencePageByID } from "./utils/confluenceUtils";
+import { createConfluencePage, createOrFindAuditIndexPage, getConfluencePageByID } from "./utils/confluenceUtils";
 import { createJiraProject, createOrFindAuditJiraProject } from "./utils/jiraUtils";
 
 const ErrorMessage = () => {
@@ -71,7 +71,12 @@ const App = () => {
 
   const testFunction = async () => {
     setSubmitted(true);
-    const response = await createOrFindAuditJiraProject(accountId);
+    const response = await createConfluencePage(spaceKey, undefined, "TestTitle2", `
+    <ac:structured-macro ac:name="jira">  
+      <ac:parameter ac:name="columns">key</ac:parameter>  
+      <ac:parameter ac:name="key">WCA-5</ac:parameter>
+    </ac:structured-macro>
+    ` );
     setJobResponse(response);
   };
 

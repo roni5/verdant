@@ -1,11 +1,15 @@
 export const auditPageCreator = (url, auditData) =>
-  `<h3>Overview</h3>
+  `<h3>✨ Overview</h3>
+    <p><strong>URL:</strong> <a href="https://${url.replace(
+      /&/g,
+      "&amp;"
+    )}">${url}</a></p>
     <p><strong>Audit Time:</strong> ${auditData.auditTimestamp}</p>
     <p><strong>Audit Duration:</strong> ${(auditData.duration / 1000).toFixed(
       2
     )} seconds</p>
     <p><b>Audit Score:</b> ${auditData.score}/5 </p>
-    <h3>Page Weight</h3>
+    <h3>🏋️‍♀️ Page Weight</h3>
     <table class="confluenceTable">
       <tbody>
         <tr>
@@ -26,33 +30,44 @@ export const auditPageCreator = (url, auditData) =>
       </tbody>
     </table>
     <p>Not sure what these results mean? Click here to learn more about carbon equivalents here.</p>
-    <h3>Performance</h3>
-    <p>...</p>
-    <h3>Hosting</h3>
-    <p>${
-      auditData.hosting.url
-    } is hosted on <a href=\"${auditData.hosting.hosted_by_website.replace(
-    /&/g,
-    "&amp;"
-  )}\">${
-    auditData.hosting.hosted_by
-  }</a> which the green web foundation considers to be ${
-    auditData.hosting ? "green" : "not green"
-  }.</p>
+    <h3>⚡️ Performance</h3>
+    <p>Your site has a performance score of ${(auditData.pagePerformance*100).toFixed(2)}%. This is ${auditData.pagePerformance < 0.69 ? "lower than average and you should take measures to address this.":"is above average and not a concern. Though it is always good to rerun these tests and make sure you are regularly checking these scores for change."}</p>
+    <h3>🌎 Hosting</h3>
     ${
-      auditData.hosting.supporting_documents.length > 0
-        ? `
-    <p>Here are some supporting documents:</p>
-    <ul>
-      ${auditData.hosting.supporting_documents
-        .map(
-          ({ title, link }) =>
-            `<li><a href=\"${link.replace(/&/g, "&amp;")}\">${title}</a></li>`
-        )
-        .join("")}
-    </ul>`
-        : ``
+      auditData.data
+        ? `<p>${
+        auditData.hosting.url
+      } is hosted on <a href=\"${auditData.hosting.hosted_by_website.replace(
+            /&/g,
+            "&amp;"
+          )}\">${
+            auditData.hosting.hosted_by
+          }</a> which the green web foundation considers to be ${
+            auditData.hosting ? "green" : "not green"
+          }.</p>
+      ${
+        auditData.hosting.supporting_documents.length > 0
+          ? `<p>Here are some supporting documents:</p>
+      <ul>
+        ${auditData.hosting.supporting_documents
+          .map(
+            ({ title, link }) =>
+              `<li><a href=\"${link.replace(/&/g, "&amp;")}\">${title}</a></li>`
+          )
+          .join("")}
+      </ul>`:``
+      }`: `<p>We were not able to find any carbon information around the page's hosting. This normally means that the page is not on a green hosting.</p>`
     }
-    <h3>Suggested Actions</h3>
-    <p>...</p>
-    `;
+    <h3>💡 Suggested Actions</h3>
+    ${
+      auditData.suggestedTasks.length > 0
+        ? `${auditData.suggestedTasks
+        .map(({ task, description, issue }) => {
+          return `<p><strong>${task}</strong>: ${description}</p>
+                <ac:structured-macro ac:name="jira">  
+                <ac:parameter ac:name="columns">key</ac:parameter>  
+                <ac:parameter ac:name="key">${issue.key}</ac:parameter>
+              </ac:structured-macro>`;
+        })
+        .join("")}`: `No suggested tasks`
+    }`;
