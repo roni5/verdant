@@ -1,6 +1,6 @@
 ## Verdant makes reducing carbon-emissions a team sport.
 
-The internet emits 1.6 billion annual tons of greenhouse gas emissions [BBC](https://www.bbc.com/future/article/20200305-why-your-internet-habits-are-not-as-clean-as-you-think). Every single click is energy-hungry 🐛 so we need to be doing more as businesses to create a greener digital space, and reduce our contribution to the problem! 
+The internet emits 1.6 billion annual tons of greenhouse gas emissions ([BBC](https://www.bbc.com/future/article/20200305-why-your-internet-habits-are-not-as-clean-as-you-think)). Every single click is energy-hungry 🐛 so we need to be doing more as businesses to create a greener digital space, and reduce our contribution to the problem! 
 There is an ever-growing expectation for businesses to prioritise green-thinking and reduce carbon emissions, but this problem is not solved by single individuals or by awareness alone. We believe everyone in the team should be leading the charge. 
 Verdant helps a team understand the carbon footprint of their website, by unearthing the problem areas and providing easy solutions. It serves three key personas within the team, to ensure everyone has their chance to make an impact: #1 product managers, #2 engineers, #3 leadership 
 
