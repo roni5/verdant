@@ -10,16 +10,18 @@ const resolver = new Resolver();
 
 resolver.define("event-listener", async ({ payload, context }) => {
   const { url, spaceKey, contentId, accountId } = payload;
-  const indexPageId = await createOrFindAuditIndexPage(spaceKey);
+  const indexPageId = await createOrFindAuditIndexPage(spaceKey, url);
   const auditData = await audit(url);
   const jiraId = await createOrFindAuditJiraProject(accountId);
-  const issues = await createJiraIssues(url, auditData);
-  auditData.suggestedTasks = auditData.suggestedTasks.map(({...rest}, i) => {
-    return {
-      ...rest,
-      issue: issues[i],
-    };
-  })
+  if(auditData.suggestedTasks.length > 0) {
+    const issues = await createJiraIssues(url, auditData);
+    auditData.suggestedTasks = auditData.suggestedTasks.map(({...rest}, i) => {
+      return {
+        ...rest,
+        issue: issues[i],
+      };
+    })
+  }
   const pageId = await createAuditPage(auditData, spaceKey, indexPageId, url);
   await saveAudit(url, contentId, {
     pageId,

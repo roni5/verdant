@@ -1,6 +1,5 @@
 import ForgeUI, {
   render,
-  Badge,
   Tag,
   Macro,
   Text,
@@ -29,7 +28,7 @@ const App = () => {
 
   return (
     <Fragment>
-      <Heading size="medium">WebCarbon Reports</Heading>
+      <Heading size="medium">Verdant WebCarbon Reports</Heading>
       <Tabs>
         <Tab label="Overview">
           {pageRelatedAudits.length > 0 ? (

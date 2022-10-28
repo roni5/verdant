@@ -1,10 +1,20 @@
 modules:
   jira:dashboardGadget:
+      - key: web-carbon-leaderboard-gadget
+        title: Verdant Leaderboard
+        description: Displays the best and worst audited webpages.
+        thumbnail: https://ik.imagekit.io/sld/Frame_3__1__vMAxCrl8w.png
+        function: leaders-gadget
       - key: web-carbon-green-hosting-gadget
-        title: Web Carbon Green Hosting
-        description: Displays what percentage of your audited webpages are green.
+        title: Verdant Overview
+        description: Displays statistics on your audited webpages.
         thumbnail: https://ik.imagekit.io/sld/Frame_3__1__vMAxCrl8w.png
         function: hosting-gadget
+      - key: web-carbon-manual-audit
+        title: Verdant Web Carbon Auditor
+        description: A form to manually carbon audit webpages.
+        thumbnail: https://ik.imagekit.io/sld/Frame_3__1__vMAxCrl8w.png
+        function: manual-audit-gadget
   consumer:
     - key: queue-consumer
       queue: audit-queue
@@ -13,30 +23,26 @@ modules:
         method: event-listener
   macro:
     - key: audit-macro
-      function: macro
-      title: Viridescent Reporter
+      function: page-reporter
+      title: Verdant Reporter
       description: Web Carbon Report
   confluence:contextMenu:
     - key: audit-selector
       function: selector
       title: Audit Site
-  confluence:globalPage:
-    - key: gs
-      function: global-stats
-      title: Verdent Web Carbon Stats
-      route: web-carbon-stats
-      icon: https://ik.imagekit.io/sld/Frame_3__1__vMAxCrl8w.png
   function:
+    - key: manual-audit-gadget
+      handler: manual-audit.run
+    - key: leaders-gadget
+      handler: leaders-gadget.run
     - key: hosting-gadget
-      handler: hosting-gadget.run
+      handler: stats-gadget.run
     - key: selector
       handler: selector.run
-    - key: macro
-      handler: macro.run
+    - key: page-reporter
+      handler: page-reporter.run
     - key: reporter-function
       handler: reporter.handler
-    - key: global-stats
-      handler: global-stats.run
 app:
   id: ari:cloud:ecosystem::app/6cf02130-bba5-4de8-8fd8-03a039f48355
 permissions:
@@ -56,3 +62,4 @@ permissions:
     - manage:jira-configuration
     - read:jira-work
     - write:jira-work
+    - manage:jira-project

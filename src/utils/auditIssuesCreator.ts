@@ -21,6 +21,9 @@ const issueCreator = (jiraProjectID, url, summary, description) => {
           },
         ],
       },
+      assignee: {
+        id: null,
+      },
       issuetype: {
         name: "Task",
       },
@@ -29,8 +32,8 @@ const issueCreator = (jiraProjectID, url, summary, description) => {
 };
 
 export const auditIssuesCreator = (jiraProjectID, url, auditData) => {
-  const issues = []
-  auditData.suggestedTasks.map(({task, description}) => {
+  const issues = [];
+  auditData.suggestedTasks.map(({ task, description }) => {
     return issues.push(issueCreator(jiraProjectID, url, task, description));
   });
   return issues;

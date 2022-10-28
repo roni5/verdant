@@ -3,6 +3,7 @@ import { auditIssuesCreator } from "./auditIssuesCreator";
 
 export const createJiraIssues = async (url, auditData) => {
   let jiraProjectID = await storage.get("audits-jira-project-id");
+  console.log(auditData)
   const issue = await api.asApp().requestJira(route`/rest/api/3/issue/bulk`, {
     method: "POST",
     headers: {

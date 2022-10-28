@@ -29,7 +29,21 @@ export const auditPageCreator = (url, auditData) =>
         </tr>
       </tbody>
     </table>
-    <p>Not sure what these results mean? Click here to learn more about carbon equivalents here.</p>
+    <p>Assuming this page has 10,000 uncached visits throughout the year, it releases ${(auditData.carbon*10).toFixed(0)}kg of carbon, which is a equivalent to:</p>
+    <ul>
+    <li>
+      <p>🐘 The weight as ${auditData.elephant.toFixed(0)} baby elephants.</p>
+    </li>
+    <li>
+      <p>🚗 The amount of carbon your car would produce on a ${auditData.car.toFixed(0)} mile drive.</p>
+    </li>
+    <li>
+      <p>🌲 The amount of carbon that ${auditData.tree.toFixed(0)} trees absorb in a year.</p>
+    </li>
+    <li>
+      <p>💎 The amount of carbon released diamond mining for ${auditData.carbon.toFixed(0)} carats.</p>
+    </li>
+    </ul>
     <h3>⚡️ Performance</h3>
     <p>Your site has a performance score of ${(auditData.pagePerformance*100).toFixed(2)}%. This is ${auditData.pagePerformance < 0.69 ? "lower than average and you should take measures to address this.":"is above average and not a concern. Though it is always good to rerun these tests and make sure you are regularly checking these scores for change."}</p>
     <h3>🌎 Hosting</h3>
@@ -58,8 +72,7 @@ export const auditPageCreator = (url, auditData) =>
       </ul>`:``
       }`: `<p>We were not able to find any carbon information around the page's hosting. This normally means that the page is not on a green hosting.</p>`
     }
-    <h3>💡 Suggested Actions</h3>
-    ${
+    <h3>💡 Suggested Actions</h3>${
       auditData.suggestedTasks.length > 0
         ? `${auditData.suggestedTasks
         .map(({ task, description, issue }) => {
@@ -69,5 +82,6 @@ export const auditPageCreator = (url, auditData) =>
                 <ac:parameter ac:name="key">${issue.key}</ac:parameter>
               </ac:structured-macro>`;
         })
-        .join("")}`: `No suggested tasks`
+        .join("")}`: 
+`No suggested tasks`
     }`;

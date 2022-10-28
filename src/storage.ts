@@ -1,4 +1,4 @@
-import { storage } from "@forge/api";
+import { storage, properties } from "@forge/api";
 import { useState } from "@forge/ui";
 
 function auditKey(term) {
@@ -22,6 +22,15 @@ export async function getAudits() {
   }
 }
 
+export async function getAuditsViaProperties(){
+  const value = await  properties.onJiraProject("WCA").get("audits");
+  if (value) {
+    return value;
+  } else {
+    return [];
+  }
+}
+
 export async function saveAudit(url, contentId, auditData) {
   const audits = await getAudits();
   const exisitingIndex = audits.findIndex((audit) => audit.url === url && audit.contentId === contentId);
@@ -32,6 +41,7 @@ export async function saveAudit(url, contentId, auditData) {
     audits.push({ url, ...auditData });
   }
   await storage.set("audits", [...audits]);
+  await properties.onJiraProject("WCA").set("audits", [...audits]);
   return audits;
 }
 
@@ -47,6 +57,12 @@ async function clearAllAudits() {
   return [];
 }
 
+export function useAuditsViaProperties(){
+  const [audits, setAudits] = useState(() => getAuditsViaProperties());
+  return {
+    audits
+  }
+}
 export function useAudits() {
   const [audits, setAudits] = useState(() => getAudits());
   return {

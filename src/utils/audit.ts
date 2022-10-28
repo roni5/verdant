@@ -24,6 +24,7 @@ const audit = async (auditURL) => {
     conductAudit(auditURL),
     greenFoundation(auditURL),
   ]);
+  console.log(results);
   try {
     const {
       lighthouseResult: {
@@ -46,7 +47,7 @@ const audit = async (auditURL) => {
       audits["uses-responsive-images"].details.overallSavingsBytes /
       1024 /
       1024;
-
+    const carbon = (MBWeight * 10)
     const payload = {
       auditTimestamp: analysisUTCTimestamp,
       duration: total,
@@ -54,10 +55,14 @@ const audit = async (auditURL) => {
       pagePerformance: performance.score,
       stackPacks,
       hosting: hostingInfo,
-      carbon: MBWeight * 10,
+      carbon,
       carbonWithCache: MBWeight * 10 - cachedWeight * 10 + 0.5,
       potentialImageSavings,
       cachedWeight,
+      elephant: Math.ceil((carbon*10) / 120),
+      car: Math.ceil((carbon * 10000) / 351),
+      tree: Math.ceil((carbon * 10) / 21),
+      diamond: Math.ceil((carbon * 10) / 55),
       // fullAudit: audits,
     };
 
